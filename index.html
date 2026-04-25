@@ -2,100 +2,183 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel Oficial - Cidade Torcidas</title>
+<title>Painel de Regras - Cidade</title>
+
 <style>
-body{margin:0;font-family:Arial;background:#0f172a;color:#fff}
-.sidebar{position:fixed;width:260px;height:100vh;background:#020617;padding:20px}
-.sidebar h2{text-align:center}
-.sidebar button{width:100%;padding:12px;margin:8px 0;background:#1e293b;border:none;color:#fff;cursor:pointer}
-.sidebar button:hover{background:#334155}
-.content{margin-left:280px;padding:30px}
-.card{background:#020617;padding:20px;border-radius:10px;display:none}
-.active{display:block}
-.login{position:fixed;inset:0;background:#020617;display:flex;align-items:center;justify-content:center}
-.login-box{background:#0f172a;padding:30px;border-radius:10px;text-align:center}
-button.main{background:#22c55e;border:none;padding:10px 20px;color:#fff;cursor:pointer;margin-top:10px}
-.discord{background:#5865F2}
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+}
+
+header {
+    background: #020617;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 2px solid #1e293b;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background: #020617;
+    padding: 15px;
+    border-right: 2px solid #1e293b;
+}
+
+.sidebar button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #1e293b;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.sidebar button:disabled {
+    background: #334155;
+    cursor: not-allowed;
+}
+
+.content {
+    flex: 1;
+    padding: 30px;
+}
+
+.card {
+    background: #020617;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #1e293b;
+}
+
+button.confirm {
+    margin-top: 20px;
+    padding: 15px;
+    width: 100%;
+    background: green;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.final {
+    text-align: center;
+    font-size: 22px;
+    color: #22c55e;
+}
 </style>
 </head>
-<body oncontextmenu="return false">
 
-<div class="login" id="login">
-  <div class="login-box">
-    <h2>Bem-vindo à Cidade</h2>
-    <p>Você leu e concorda com todas as regras?</p>
-    <input type="checkbox" id="check"> Eu concordo com as regras<br>
-    <button class="main" onclick="entrar()">Entrar</button>
-  </div>
-</div>
+<body>
+
+<header>📜 Painel de Regras - Cidade</header>
+
+<div class="container">
 
 <div class="sidebar">
-  <h2>📜 REGRAS</h2>
-  <button onclick="show('geral')">Regras Gerais</button>
-  <button onclick="show('rp')">Roleplay</button>
-  <button onclick="show('torcidas')">Torcidas</button>
-  <button onclick="show('discord')">Discord</button>
-  <button onclick="show('punicoes')">Punições</button>
-  <button class="discord" onclick="window.open('https://discord.gg/apQW2vWYPd')">Entrar no Discord</button>
+    <button id="btn0">Boas-vindas</button>
+    <button id="btn1" disabled>Discord</button>
+    <button id="btn2" disabled>Loja</button>
+    <button id="btn3" disabled>Regras Gerais</button>
+    <button id="btn4" disabled>Roleplay</button>
+    <button id="btn5" disabled>Torcidas</button>
+    <button id="btn6" disabled>Denúncias</button>
+    <button id="btn7" disabled>Punições</button>
 </div>
 
 <div class="content">
-
-<div id="geral" class="card active">
-<h1>Regras Gerais</h1>
-<p>Proibido qualquer tipo de discriminação, cheats, bugs ou vantagens indevidas.</p>
-<p>Proibido racismo, preconceito, assédio ou qualquer prática de DARK RP.</p>
-<p>Qualquer violação pode resultar em banimento.</p>
-</div>
-
-<div id="rp" class="card">
-<h1>Regras Roleplay</h1>
-<p>Proibido sair do RP, Metagaming, RDM, VDM, Combat Logging e Power Gaming.</p>
-<p>Proibido ações em safezones e correr para áreas seguras.</p>
-<p>Proibido ações sem construção de RP.</p>
-</div>
-
-<div id="torcidas" class="card">
-<h1>Regras Torcidas</h1>
-<p>Proibido invasão de sede sem acordo.</p>
-<p>Proibido iniciar brigas sem farda.</p>
-<p>Proibido alianças fora dos períodos permitidos.</p>
-<p>Proibido invasão de ações de outras torcidas.</p>
-</div>
-
-<div id="discord" class="card">
-<h1>Regras Discord</h1>
-<p>Proibido ofensas, divulgação e spam.</p>
-<p>Use os canais corretos e respeite a staff.</p>
-</div>
-
-<div id="punicoes" class="card">
-<h1>Punições</h1>
-<p>Advertências progressivas até banimento permanente.</p>
-<p>Racismo e hack = BAN PERMANENTE.</p>
+    <div class="card" id="content"></div>
 </div>
 
 </div>
 
 <script>
-function entrar(){
- if(document.getElementById('check').checked){
-  document.getElementById('login').style.display='none';
- } else {
-  alert('Você precisa aceitar as regras!');
- }
+
+let etapa = localStorage.getItem("etapa") || 0;
+etapa = parseInt(etapa);
+
+const conteudos = [
+
+`<h2>Bem-vindo</h2>
+<p>Seja bem-vindo à cidade.</p>
+<p>Leia todas as regras antes de jogar.</p>`,
+
+`<h2>Regras Discord</h2>
+<p>Proibido racismo, ofensas, divulgação e conteúdo impróprio.</p>`,
+
+`<h2>Regras Loja</h2>
+<p>Sem reembolso. VIP não pode ser vendido.</p>`,
+
+`<h2>Regras Gerais</h2>
+<p>Proibido discriminação, hacks, bugs e vantagens ilegais.</p>`,
+
+`<h2>Regras Roleplay</h2>
+<p>Proibido RDM, VDM, MetaGaming, Combat Logging e Anti RP.</p>`,
+
+`<h2>Regras Torcidas</h2>
+<p>Sem invasão, alianças ilegais ou ações fora das regras.</p>`,
+
+`<h2>Denúncias</h2>
+<p>Obrigatório vídeo, ID e até 24h.</p>`,
+
+`<h2>Punições</h2>
+<p>Advertências, prisão e banimentos conforme regras.</p>
+<div class="final">
+✔ Você concluiu todas as regras!<br><br>
+Clique abaixo para confirmar
+</div>
+<button class="confirm" onclick="finalizar()">ACEITO TODAS AS REGRAS</button>`
+];
+
+function atualizarMenu() {
+    for (let i = 0; i <= etapa; i++) {
+        document.getElementById("btn"+i).disabled = false;
+    }
 }
 
-function show(id){
- document.querySelectorAll('.card').forEach(el=>el.classList.remove('active'));
- document.getElementById(id).classList.add('active');
+function carregar(index) {
+    if(index > etapa) return;
+    document.getElementById("content").innerHTML = conteudos[index];
 }
 
-document.addEventListener('selectstart',e=>e.preventDefault());
-window.addEventListener('keydown',e=>{
- if(e.ctrlKey && (e.key==='c'||e.key==='u')) e.preventDefault();
+function concluir() {
+    if (etapa < conteudos.length - 1) {
+        etapa++;
+        localStorage.setItem("etapa", etapa);
+        atualizarMenu();
+        carregar(etapa);
+    }
+}
+
+function finalizar() {
+    alert("Você aceitou todas as regras!");
+    localStorage.setItem("finalizado", true);
+}
+
+document.querySelectorAll(".sidebar button").forEach((btn, i) => {
+    btn.onclick = () => carregar(i);
 });
+
+document.getElementById("content").onclick = function(e){
+    if(e.target.classList.contains("confirm") === false){
+        concluir();
+    }
+}
+
+atualizarMenu();
+carregar(etapa);
+
 </script>
 
 </body>
