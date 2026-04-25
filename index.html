@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Regras - Servidor FiveM</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: #fff;
+}
+.sidebar {
+  position: fixed;
+  width: 250px;
+  height: 100vh;
+  background: #020617;
+  padding: 20px;
+}
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.sidebar button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: #1e293b;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  text-align: left;
+}
+.sidebar button:hover {
+  background: #334155;
+}
+.content {
+  margin-left: 270px;
+  padding: 30px;
+}
+.card {
+  background: #020617;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.hidden { display: none; }
+</style>
+</head>
+<body oncontextmenu="return false">
+
+<div class="sidebar">
+  <h2>📜 REGRAS</h2>
+  <button onclick="show('geral')">Regras Gerais</button>
+  <button onclick="show('torcidas')">Torcidas</button>
+  <button onclick="show('punicoes')">Punições</button>
+  <button onclick="show('guerra')">Guerra</button>
+  <button onclick="show('vip')">VIP</button>
+</div>
+
+<div class="content">
+  <div id="geral" class="card">
+    <h1>Regras Gerais</h1>
+    <p>1. Respeitar todos os jogadores.</p>
+    <p>2. Proibido uso de cheats.</p>
+  </div>
+
+  <div id="torcidas" class="card hidden">
+    <h1>Regras de Torcidas</h1>
+    <p>1. Máximo de membros por torcida.</p>
+    <p>2. Proibido atacar fora de horário.</p>
+  </div>
+
+  <div id="punicoes" class="card hidden">
+    <h1>Punições</h1>
+    <p>1. Aviso verbal</p>
+    <p>2. Banimento</p>
+  </div>
+
+  <div id="guerra" class="card hidden">
+    <h1>Regras de Guerra</h1>
+    <p>1. Guerra apenas em locais permitidos.</p>
+  </div>
+
+  <div id="vip" class="card hidden">
+    <h1>Regras VIP</h1>
+    <p>1. Benefícios exclusivos para VIP.</p>
+  </div>
+</div>
+
+<script>
+function show(section) {
+  document.querySelectorAll('.card').forEach(el => el.classList.add('hidden'));
+  document.getElementById(section).classList.remove('hidden');
+}
+
+// Bloquear seleção de texto
+document.addEventListener('selectstart', e => e.preventDefault());
+
+// Bloquear Ctrl+C
+window.addEventListener('keydown', function(e) {
+  if (e.ctrlKey && (e.key === 'c' || e.key === 'u')) {
+    e.preventDefault();
+  }
+});
+</script>
+
+</body>
+</html>
